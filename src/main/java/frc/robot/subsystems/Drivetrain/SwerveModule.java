@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -46,6 +47,8 @@ public class SwerveModule extends SubsystemBase{
         this.absEncoder = new CANcoder(absEncoderID);
 
         configure(isDriveMotorInverted, isSteerMotorInverted);
+
+        resetEncoders();
     }
 
     public void configure(boolean isDriveMotorInverted, boolean isSteerMotorInverted) {
@@ -59,11 +62,15 @@ public class SwerveModule extends SubsystemBase{
             PersistMode.kPersistParameters);
     }
 
+    public double getCANcoderRad() {
+        double angle = this.absEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
+        SmartDashboard.putNumber("absolutEncoderAngle", angle);
+        return angle;
+    }
+
     public void resetEncoders() {
         this.driveEncoder.setPosition(0);
-
-        double absAngle = absEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
-        this.steerEncoder.setPosition(absAngle);
+        this.steerEncoder.setPosition(getCANcoderRad());
     }
 
     public double getDrivePosition() {
@@ -107,7 +114,6 @@ public class SwerveModule extends SubsystemBase{
     //_____________SWERVE MODULE TEST METHODS_____________
 
     public void moduleTest() {
-        this.driveMotor.set(0.5);
-        this.steerMotor.set(0.5);
+        this.steerController.setReference(0, ControlType.kPosition);
     }
 }

@@ -20,14 +20,14 @@ public class RobotContainer {
   private final DriverJoystick driverJoystick = new DriverJoystick(0);
   private final Drivetrain drivetrain = new Drivetrain();
 
-  private final SendableChooser<Command> autoChooser;
+  // private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
 
     this.drivetrain.setDefaultCommand(new TeleOpCommand(drivetrain, driverJoystick));
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser",autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser",autoChooser);
 
     configureBindings();
   }
@@ -36,7 +36,7 @@ public class RobotContainer {
     this.driverJoystick.swerveTest().whileTrue(new TestCommand(drivetrain));
   }
 
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+  public PathPlannerAuto getAutonomousCommand() {
+    return new PathPlannerAuto("New Auto") ;
   }
 }

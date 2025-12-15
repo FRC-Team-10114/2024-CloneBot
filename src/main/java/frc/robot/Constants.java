@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Radian;
-import static edu.wpi.first.units.Units.Radians;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
@@ -39,18 +36,18 @@ public final class Constants {
     public static final double kTrackWidthMeters = Units.inchesToMeters(21.73);
     public static final double kWheelBaseMeters = Units.inchesToMeters(21.73);
 
-    public static final double kMaxSpeedMetersPerSecond = 4.5;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Units.degreesToRadians(1080.0);
+    public static final double kMaxSpeedMetersPerSecond = 4;
+    public static final double kMaxAngularSpeedRadiansPerSecond = 1 * 1.8 * Math.PI;
 
-    public static final int[] kFrontLeftModuleIDs = { 1, 5, 9 };
-    public static final int[] kFrontRightModuleIDs = { 2, 6, 10 };
-    public static final int[] kBackLeftModuleIDs = { 3, 7, 11 };
-    public static final int[] kBackRightModuleIDs = { 4, 8, 12 };
+    public static final int[] kFrontLeftModuleIDs = { 4, 7, 12 };
+    public static final int[] kFrontRightModuleIDs = { 3, 5, 11 };
+    public static final int[] kBackLeftModuleIDs = { 2, 6, 10 };
+    public static final int[] kBackRightModuleIDs = { 1, 8, 9 };
 
-    public static final boolean[] kFrontLeftModuleInverted = {false, false};
-    public static final boolean[] kFrontRightModuleInverted = {false, false};
-    public static final boolean[] kBackLeftModuleInverted = {false, false};
-    public static final boolean[] kBackRightModuleInverted = {false, false};
+    public static final boolean[] kFrontLeftModuleInverted = {false, true};
+    public static final boolean[] kFrontRightModuleInverted = {true, true};
+    public static final boolean[] kBackLeftModuleInverted = {false, true};
+    public static final boolean[] kBackRightModuleInverted = {true, true};
 
     public static final Translation2d[] moduleLocations = new Translation2d[] {
         new Translation2d(0.278, 0.278),
@@ -58,6 +55,6 @@ public final class Constants {
         new Translation2d(-0.278, 0.278),
         new Translation2d(-0.278, -0.278)
     };
-    public static double kTeleOpDriveSlewRate = 7.0;
+    public static double kTeleOpDriveSlewRate = 7;
   }
 }

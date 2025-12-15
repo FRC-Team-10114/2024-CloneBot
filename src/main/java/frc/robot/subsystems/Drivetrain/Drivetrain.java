@@ -1,12 +1,16 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,7 +19,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 
@@ -72,6 +81,8 @@ public class Drivetrain extends SubsystemBase {
         this.xLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
         this.yLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
         this.rotLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
+
+        AutoBuilderConfigure();
     }
 
     public double getHeading() {
@@ -125,6 +136,10 @@ public class Drivetrain extends SubsystemBase {
         this.backRight.setState(states[3]);
     }
 
+    public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3,N1> stdDevMeters) {
+        this.poseEstimator.addVisionMeasurement(visionPose, timestamp, stdDevMeters);
+    }
+
     // Swerve Control Methods
 
     public void teleOpDrive(double Xinput, double Yinput, double Rotinput) {
@@ -157,12 +172,11 @@ public class Drivetrain extends SubsystemBase {
     // _____________AUTONOMOUS METHOD_____________
 
     public void AutoBuilderConfigure() {
-        RobotConfig config;
+        RobotConfig config = null;
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
 
         AutoBuilder.configure(
@@ -190,5 +204,13 @@ public class Drivetrain extends SubsystemBase {
         this.poseEstimator.update(
                 this.getRotation2d(),
                 this.getModulePositions());
+
+        double[] pose = {
+            this.poseEstimator.getEstimatedPosition().getX(),
+            this.poseEstimator.getEstimatedPosition().getY(),
+            this.poseEstimator.getEstimatedPosition().getRotation().getRadians()
+        };
+
+        SmartDashboard.putNumberArray("Pose", pose);
     }
 }
