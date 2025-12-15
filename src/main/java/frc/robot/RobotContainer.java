@@ -4,16 +4,11 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.wpilibj.simulation.SendableChooserSim;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.TeleOpCommand;
 import frc.robot.commands.TestCommand;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
 
 public class RobotContainer {
 

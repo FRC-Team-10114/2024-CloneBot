@@ -1,9 +1,6 @@
-package frc.robot.subsystems;
-
-import static edu.wpi.first.units.Units.Meters;
+package frc.robot.subsystems.Drivetrain;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -21,8 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -160,6 +155,7 @@ public class Drivetrain extends SubsystemBase {
 
         this.drive(robotRelativeSpeeds);
     }
+    
     // For testing individual swerve modules
 
     public void swerveTest() {
