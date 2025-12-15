@@ -15,14 +15,9 @@ public class RobotContainer {
   private final DriverJoystick driverJoystick = new DriverJoystick(0);
   private final Drivetrain drivetrain = new Drivetrain();
 
-  // private final SendableChooser<Command> autoChooser;
-
   public RobotContainer() {
 
     this.drivetrain.setDefaultCommand(new TeleOpCommand(drivetrain, driverJoystick));
-
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser",autoChooser);
 
     configureBindings();
   }
