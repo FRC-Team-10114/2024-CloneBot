@@ -52,16 +52,16 @@ public class SwerveModule extends SubsystemBase{
 
     public void configure(boolean isDriveMotorInverted, boolean isSteerMotorInverted) {
         this.driveMotor.configure(
-            Configs.driveConfig.inverted(isDriveMotorInverted), 
+            ModuleConfigs.driveConfig.inverted(isDriveMotorInverted), 
             ResetMode.kResetSafeParameters, 
             PersistMode.kPersistParameters);
         this.steerMotor.configure(
-            Configs.steerConfig.inverted(isSteerMotorInverted), 
+            ModuleConfigs.steerConfig.inverted(isSteerMotorInverted), 
             ResetMode.kResetSafeParameters, 
             PersistMode.kPersistParameters);
     }
 
-    public double getCANcoderRad() {
+    public double getAbsoluteEncoderPosition() {
         double angle = this.absEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI;
         SmartDashboard.putNumber("absolutEncoderAngle", angle);
         return angle;
@@ -69,7 +69,7 @@ public class SwerveModule extends SubsystemBase{
 
     public void resetEncoders() {
         this.driveEncoder.setPosition(0);
-        this.steerEncoder.setPosition(getCANcoderRad());
+        this.steerEncoder.setPosition(getAbsoluteEncoderPosition());
     }
 
     public double getDrivePosition() {

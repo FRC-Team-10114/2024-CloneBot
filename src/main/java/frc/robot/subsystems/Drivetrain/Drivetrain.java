@@ -19,9 +19,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.subsystems.Dashboard.DashboardHelper;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -34,6 +35,10 @@ public class Drivetrain extends SubsystemBase {
     private final AHRS gyro;
 
     private final SlewRateLimiter xLimiter, yLimiter, rotLimiter;
+
+    private final DashboardHelper dashboardHelper;
+
+    private double MaxDriveSpeed = DrivetrainConstants.kTeleOpSpeedMetersPerSecond;
 
     public Drivetrain() {
 
@@ -62,10 +67,10 @@ public class Drivetrain extends SubsystemBase {
                 DrivetrainConstants.kBackRightModuleInverted[0],
                 DrivetrainConstants.kBackRightModuleInverted[1]);
 
+        this.gyro = new AHRS(NavXComType.kMXP_SPI);
+
         this.kinematics = new SwerveDriveKinematics(
                 DrivetrainConstants.moduleLocations);
-
-        this.gyro = new AHRS(NavXComType.kMXP_SPI);
 
         this.poseEstimator = new SwerveDrivePoseEstimator(
                 kinematics,
@@ -77,11 +82,19 @@ public class Drivetrain extends SubsystemBase {
         this.yLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
         this.rotLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
 
+        this.dashboardHelper = new DashboardHelper();
+
         AutoBuilderConfigure();
     }
 
+    // Basic Drivetrain Methods
+
     public double getHeading() {
         return -gyro.getAngle();
+    }
+
+    public void zeroHeading() {
+        gyro.reset();
     }
 
     public Rotation2d getRotation2d() {
@@ -131,7 +144,7 @@ public class Drivetrain extends SubsystemBase {
         this.backRight.setState(states[3]);
     }
 
-    public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3,N1> stdDevMeters) {
+    public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> stdDevMeters) {
         this.poseEstimator.addVisionMeasurement(visionPose, timestamp, stdDevMeters);
     }
 
@@ -144,18 +157,33 @@ public class Drivetrain extends SubsystemBase {
         Rotinput = this.rotLimiter.calculate(Rotinput);
 
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
-                Xinput * DrivetrainConstants.kMaxSpeedMetersPerSecond,
-                Yinput * DrivetrainConstants.kMaxSpeedMetersPerSecond,
+                Xinput * MaxDriveSpeed,
+                Yinput * MaxDriveSpeed,
                 Rotinput * DrivetrainConstants.kMaxAngularSpeedRadiansPerSecond);
 
-        ChassisSpeeds robotRelativeSpeeds = 
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                        fieldRelativeSpeeds, 
-                        getRotation2d());
+        ChassisSpeeds robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                fieldRelativeSpeeds,
+                getRotation2d());
 
         this.drive(robotRelativeSpeeds);
     }
-    
+
+    public void fullSpeedMode() {
+        this.MaxDriveSpeed = DrivetrainConstants.kMaxSpeedMetersPerSecond;
+
+        this.xLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+        this.yLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+        this.rotLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+    }
+
+    public void halfSpeedMode() {
+        this.MaxDriveSpeed = DrivetrainConstants.kTeleOpSpeedMetersPerSecond;
+
+        this.xLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+        this.yLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+        this.rotLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+    }
+
     // For testing individual swerve modules
 
     public void swerveTest() {
@@ -201,12 +229,16 @@ public class Drivetrain extends SubsystemBase {
                 this.getRotation2d(),
                 this.getModulePositions());
 
-        double[] pose = {
-            this.poseEstimator.getEstimatedPosition().getX(),
-            this.poseEstimator.getEstimatedPosition().getY(),
-            this.poseEstimator.getEstimatedPosition().getRotation().getRadians()
-        };
+        dashboardHelper.updatePose(getPose());
+    }
 
-        SmartDashboard.putNumberArray("Pose", pose);
+    // Commands
+
+    public Command fullSpeedCommand() {
+        return runOnce(() -> fullSpeedMode());
+    }
+
+    public Command halfSpeedCommand() {
+        return runOnce(() -> halfSpeedMode());
     }
 }

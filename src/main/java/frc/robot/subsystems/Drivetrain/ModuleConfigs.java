@@ -7,7 +7,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.Constants.ModuleConstants;
 
-public class Configs {
+public class ModuleConfigs {
     public static final SparkFlexConfig driveConfig = new SparkFlexConfig();
     public static final SparkMaxConfig steerConfig = new SparkMaxConfig();
 

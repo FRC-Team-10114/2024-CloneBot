@@ -36,8 +36,10 @@ public final class Constants {
     public static final double kTrackWidthMeters = Units.inchesToMeters(21.73);
     public static final double kWheelBaseMeters = Units.inchesToMeters(21.73);
 
-    public static final double kMaxSpeedMetersPerSecond = 2;
-    public static final double kMaxAngularSpeedRadiansPerSecond = 1 * 1.8 * Math.PI;
+    public static final double kMaxSpeedMetersPerSecond = 5;
+    public static final double kTeleOpSpeedMetersPerSecond = 2;
+
+    public static final double kMaxAngularSpeedRadiansPerSecond = 2 * 1.8 * Math.PI;
 
     public static final int[] kFrontLeftModuleIDs = { 4, 7, 12 };
     public static final int[] kFrontRightModuleIDs = { 3, 5, 11 };
@@ -55,6 +57,8 @@ public final class Constants {
         new Translation2d(-0.278, 0.278),
         new Translation2d(-0.278, -0.278)
     };
+
+    public static double kMaxSlewRate = 7;
     public static double kTeleOpDriveSlewRate = 5;
   }
 }
