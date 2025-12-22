@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
-import frc.robot.subsystems.Dashboard.DashboardHelper;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -36,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final SlewRateLimiter xLimiter, yLimiter, rotLimiter;
 
-    private final DashboardHelper dashboardHelper;
+
 
     private double MaxDriveSpeed = DrivetrainConstants.kTeleOpSpeedMetersPerSecond;
 
@@ -78,11 +77,10 @@ public class Drivetrain extends SubsystemBase {
                 this.getModulePositions(),
                 Pose2d.kZero);
 
+
         this.xLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
         this.yLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
         this.rotLimiter = new SlewRateLimiter(DrivetrainConstants.kTeleOpDriveSlewRate);
-
-        this.dashboardHelper = new DashboardHelper();
 
         AutoBuilderConfigure();
     }
@@ -171,28 +169,18 @@ public class Drivetrain extends SubsystemBase {
     public void fullSpeedMode() {
         this.MaxDriveSpeed = DrivetrainConstants.kMaxSpeedMetersPerSecond;
 
-        this.xLimiter.reset(DrivetrainConstants.kMaxSlewRate);
-        this.yLimiter.reset(DrivetrainConstants.kMaxSlewRate);
-        this.rotLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+        // this.xLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+        // this.yLimiter.reset(DrivetrainConstants.kMaxSlewRate);
+        // this.rotLimiter.reset(DrivetrainConstants.kMaxSlewRate);
     }
 
     public void halfSpeedMode() {
         this.MaxDriveSpeed = DrivetrainConstants.kTeleOpSpeedMetersPerSecond;
 
-        this.xLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
-        this.yLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
-        this.rotLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+        // this.xLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+        // this.yLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
+        // this.rotLimiter.reset(DrivetrainConstants.kTeleOpDriveSlewRate);
     }
-
-    // For testing individual swerve modules
-
-    public void swerveTest() {
-        this.frontLeft.moduleTest();
-        this.frontRight.moduleTest();
-        this.backLeft.moduleTest();
-        this.backRight.moduleTest();
-    }
-
     // _____________AUTONOMOUS METHOD_____________
 
     public void AutoBuilderConfigure() {
@@ -229,7 +217,6 @@ public class Drivetrain extends SubsystemBase {
                 this.getRotation2d(),
                 this.getModulePositions());
 
-        dashboardHelper.updatePose(getPose());
     }
 
     // Commands

@@ -28,7 +28,7 @@ public class ModuleConfigs {
                 .pid(0.13, 0.000, 0)
                 .velocityFF(drivingVelocityFeedForward)
                 .outputRange(-1, 1);
-
+                
         steerConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(40);

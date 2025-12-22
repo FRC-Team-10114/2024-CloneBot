@@ -8,11 +8,7 @@ public class DriverJoystick extends XboxController {
     public DriverJoystick(int port) {
         super(port);
     }
-
-    public Trigger swerveTest() {
-        return new Trigger(this::getAButton);
-    }
-
+    
     public Trigger zeroHeading() {
         return new Trigger(this::getBButton);
     }

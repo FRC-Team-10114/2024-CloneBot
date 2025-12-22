@@ -32,25 +32,26 @@ public final class Constants {
   }
 
   public static final class DrivetrainConstants {
-
-    public static final double kTrackWidthMeters = Units.inchesToMeters(21.73);
-    public static final double kWheelBaseMeters = Units.inchesToMeters(21.73);
-
-    public static final double kMaxSpeedMetersPerSecond = 5;
+    // Max Speeds
+    public static final double kMaxSpeedMetersPerSecond = 6.5;
     public static final double kTeleOpSpeedMetersPerSecond = 2;
 
     public static final double kMaxAngularSpeedRadiansPerSecond = 2 * 1.8 * Math.PI;
 
-    public static final int[] kFrontLeftModuleIDs = { 4, 7, 12 };
-    public static final int[] kFrontRightModuleIDs = { 3, 5, 11 };
+    // ID's: { driveMotorID, steerMotorID, absEncoderID }
+    public static final int[] kFrontLeftModuleIDs = { 4, 8, 12 };
+    public static final int[] kFrontRightModuleIDs = { 3, 7, 11 };
     public static final int[] kBackLeftModuleIDs = { 2, 6, 10 };
-    public static final int[] kBackRightModuleIDs = { 1, 8, 9 };
+    public static final int[] kBackRightModuleIDs = { 1, 5, 9 };
 
+    // Inverted: { driveMotorInverted, steerMotorInverted }
     public static final boolean[] kFrontLeftModuleInverted = { false, true };
     public static final boolean[] kFrontRightModuleInverted = { true, true };
     public static final boolean[] kBackLeftModuleInverted = { false, true };
     public static final boolean[] kBackRightModuleInverted = { true, true };
 
+
+    // Locations of the modules relative to the robot center
     public static final Translation2d[] moduleLocations = new Translation2d[] {
         new Translation2d(0.278, 0.278),
         new Translation2d(0.278, -0.278),
@@ -58,7 +59,8 @@ public final class Constants {
         new Translation2d(-0.278, -0.278)
     };
 
-    public static double kMaxSlewRate = 7;
-    public static double kTeleOpDriveSlewRate = 5;
+    // Slew Rates
+    public static final double kTeleOpDrivePositiveSlewRate = 5;
+    public static final double kTeleOpDriveNegativeSlewRate = 20;
   }
 }

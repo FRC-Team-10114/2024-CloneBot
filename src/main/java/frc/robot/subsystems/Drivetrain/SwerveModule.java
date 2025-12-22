@@ -109,10 +109,4 @@ public class SwerveModule extends SubsystemBase{
         this.driveController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
         this.steerController.setReference(state.angle.getRadians(), ControlType.kPosition);
     }
-
-    //_____________SWERVE MODULE TEST METHODS_____________
-
-    public void moduleTest() {
-        this.steerController.setReference(0, ControlType.kPosition);
-    }
 }

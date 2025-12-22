@@ -2,20 +2,21 @@ package frc.robot.subsystems.Dashboard;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotState;
 
 public class DashboardHelper extends SubsystemBase {
 
-    private Pose2d robotPose;
+    private RobotState state;
+
     private SendableChooser<Command> autoChooser;
 
-    public DashboardHelper() {
-        this.robotPose = Pose2d.kZero;
+    public DashboardHelper(RobotState state) {
         this.autoChooser = AutoBuilder.buildAutoChooser();
+        this.state = state;
     }
 
     @Override
@@ -24,19 +25,14 @@ public class DashboardHelper extends SubsystemBase {
         SmartDashboard.putNumberArray(
                 "robotPose",
                 new double[] {
-                        robotPose.getX(),
-                        robotPose.getY(),
-                        robotPose.getRotation().getRadians()
+                        state.robotPose.getX(),
+                        state.robotPose.getY(),
+                        state.robotPose.getRotation().getRadians()
                 });
 
         SmartDashboard.putData("Auto Modes", autoChooser);
 
     }
-
-    public void updatePose(Pose2d robotPose) {
-        this.robotPose = robotPose;
-    }
-
     public Command getAuto() {
         return autoChooser.getSelected();
     }
